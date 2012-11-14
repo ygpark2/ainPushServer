@@ -11,12 +11,26 @@ public class User {
 	
 	@Id
 	private Long id;
-	
+
+	@Column(length=50)
 	private String firstName;
+	@Column(length=50)
 	private String lastName;
+	@Column(length=150, unique=true)
+	private String email;
 	
-	@Column(unique=true)
+	@Column(nullable=false)
+	private boolean enabled = true;
+	@Column(nullable=false)
+	private boolean accountNonExpired = true;
+	@Column(nullable=false)
+	private boolean credentialsNonExpired = true;
+	@Column(nullable=false)
+	private boolean accountNonLocked = true;
+	
+	@Column(length=35, unique=true, nullable=false)
 	private String username;
+	@Column(length=50, nullable=false)
 	private String password;
 	
 	@OneToOne(mappedBy="user", cascade={CascadeType.ALL})
@@ -68,5 +82,37 @@ public class User {
 
 	public void setRole(Role role) {
 		this.role = role;
+	}
+
+	public boolean getEnabled() {
+		return enabled;
+	}
+
+	public void setEnabled(boolean enabled) {
+		this.enabled = enabled;
+	}
+
+	public boolean getAccountNonExpired() {
+		return accountNonExpired;
+	}
+
+	public void setAccountNonExpired(boolean accountNonExpired) {
+		this.accountNonExpired = accountNonExpired;
+	}
+
+	public boolean getCredentialsNonExpired() {
+		return credentialsNonExpired;
+	}
+
+	public void setCredentialsNonExpired(boolean credentialsNonExpired) {
+		this.credentialsNonExpired = credentialsNonExpired;
+	}
+
+	public boolean getAccountNonLocked() {
+		return accountNonLocked;
+	}
+
+	public void setAccountNonLocked(boolean accountNonLocked) {
+		this.accountNonLocked = accountNonLocked;
 	}
 }

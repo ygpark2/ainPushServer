@@ -18,17 +18,20 @@
 
 	<!-- Scans the classpath for annotated components that will be auto-registered as Spring beans.
 	 For example @Controller and @Service. Make sure to set the correct base-package -->
-
 	<context:component-scan base-package="org.ain" />
+
+	<!-- Configures the annotation-driven Spring MVC Controller programming model.
+	Note that, with Spring 3.0, this tag works in Servlet MVC only!  -->
+	<mvc:annotation-driven /> 
 
 	<mvc:resources mapping="/resources/**" location="/resources/" /> 
 
- 	<!-- Imports logging configuration -->
-	<import resource="trace-context.xml"/>
+ 	<!-- Imports logging configuration
+	<import resource="trace-context.xml"/> -->
 
 	<!-- Imports datasource configuration -->
 	<import resource="spring-data.xml"/>
-
+	
 	<bean id="deployProperties" class="org.springframework.beans.factory.config.PropertiesFactoryBean">
 		<property name="location" value="/WEB-INF/spring/spring.properties" />
 	</bean>

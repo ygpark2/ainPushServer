@@ -11,30 +11,42 @@
 		http://www.springframework.org/schema/util 
 		http://www.springframework.org/schema/util/spring-util-3.1.xsd">
 
+	<global-method-security secured-annotations="enabled" />
+
 	<http pattern="/resources" security="none" />
 	
-	<http auto-config="true"  use-expressions="true">
-		<intercept-url pattern="/login" access="permitAll"/>
-		<intercept-url pattern="/logout" access="permitAll"/>
-		<intercept-url pattern="/denied" access="hasRole('ROLE_USER')"/>
-		<!--  <intercept-url pattern="/" access="hasRole('ROLE_USER')"/> -->
-		<intercept-url pattern="/user*" access="hasRole('ROLE_USER')"/>
-		<intercept-url pattern="/admin*" access="hasRole('ROLE_ADMIN')"/>
-		
-		<form-login login-page="/login" 
-			authentication-failure-url="/login/failure" 
-			default-target-url="/"/>
-		
-		<access-denied-handler error-page="/denied"/>
-		
-		<logout invalidate-session="true" 
-			logout-success-url="/logout/success" 
-			logout-url="/logout"/>
+	<http auto-config="true" use-expressions="true" access-denied-page="/user/denied" >
+		<!-- 
+		<intercept-url pattern="/user/signup" access="permitAll"/>
+		<intercept-url pattern="/user/login" access="permitAll"/>
+		<intercept-url pattern="/user/logout" access="permitAll"/>
+		 -->
+		<intercept-url pattern="/push/**" access="isAuthenticated()" />
+		 <intercept-url pattern="/**" access="permitAll" />
+		<!-- <intercept-url pattern="/" access="ROLE_ANONYMOUS" /> -->
+		<intercept-url pattern="/app/**" access="hasRole('ROLE_USER')"/>
+		<intercept-url pattern="/admin/**" access="hasRole('ROLE_ADMIN')"/>
+<!-- 
+		<form-login login-page="/user/login" authentication-failure-url="/user/login/failure" 
+				default-target-url="/" />
+ -->
+		<!-- <logout logout-url="/j_spring_security_logout" logout-success-url="/home" /> -->
+<!-- 		<logout invalidate-session="true" logout-success-url="/user/logout/success" 
+			logout-url="/user/logout"/> -->
+
+	    <remember-me />
+
+	    <session-management invalid-session-url="/">
+	        <concurrency-control max-sessions="2" error-if-maximum-exceeded="true" />
+	    </session-management>
 	</http>
-	
+
+	<beans:bean class="org.springframework.security.authentication.encoding.Md5PasswordEncoder" id="passwordEncoder"/>  
+
 	<authentication-manager>
-	        <authentication-provider user-service-ref="customUserDetailsService">
-	        		<password-encoder hash="md5"/>
-	        </authentication-provider>
+	    <authentication-provider user-service-ref="customUserDetailsService">
+	        <password-encoder ref="passwordEncoder"/>  
+	        <!-- <password-encoder hash="md5"/> -->
+	    </authentication-provider>
 	</authentication-manager>
 </beans:beans>
