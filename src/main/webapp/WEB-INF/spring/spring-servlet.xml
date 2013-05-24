@@ -24,6 +24,6 @@
 		<beans:property name="order" value="1" />
 	</beans:bean>
 
-	<context:component-scan base-package="org.ain" />
+	<!-- <context:component-scan base-package="org.ain" /> -->
 
 </beans:beans>

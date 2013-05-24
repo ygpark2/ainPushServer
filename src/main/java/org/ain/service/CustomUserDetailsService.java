@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import org.ain.domain.Role;
 import org.ain.repository.UserRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,7 +49,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 					accountNonExpired,
 					credentialsNonExpired,
 					accountNonLocked,
-					getAuthorities(domainUser.getRole().getRole()));
+					getAuthorities(domainUser.getRoles()));
 			
 		} catch (Exception e) {
 			throw new RuntimeException(e);
@@ -60,9 +61,12 @@ public class CustomUserDetailsService implements UserDetailsService {
 	 * @param role the numerical role
 	 * @return a collection of {@link GrantedAuthority
 	 */
-	public Collection<? extends GrantedAuthority> getAuthorities(Integer role) {
-		List<GrantedAuthority> authList = getGrantedAuthorities(getRoles(role));
-		return authList;
+	public Collection<? extends GrantedAuthority> getAuthorities(List<Role> roles) {
+		List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
+		for (Role role : roles) {
+			authorities.add(new SimpleGrantedAuthority(role.getRole()));
+		}
+		return authorities;
 	}
 	
 	/**

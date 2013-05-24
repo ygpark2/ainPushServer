@@ -11,7 +11,7 @@
 
 <body>
 	<p class="message">${message}</p>
-	<form:form action="signup" method="POST" modelAttribute="ain_user" id="signup-form">
+	<form:form action="<c:url value="/user/signup"/>" method="POST" modelAttribute="ain_user" id="signup-form">
 		<fieldset>
 			<legend>Sign Up</legend>
 

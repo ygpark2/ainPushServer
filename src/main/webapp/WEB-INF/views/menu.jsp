@@ -19,6 +19,6 @@
 		
 		<li><a href="${logoutUrl}">Logout</a></li>
 	</ul>
-	<span id="menu-username"><%=SecurityContextHolder.getContext().getAuthentication().getName()%></span>
+	<span id="menu-username"><sec:authentication property="principal.username" /></span>
 	<br style="clear:left"/>
 </div>

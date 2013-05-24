@@ -1,16 +1,30 @@
 package org.ain.domain;
 
+import java.util.List;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.DiscriminatorColumn;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.Table;
+import javax.persistence.InheritanceType;
+import javax.persistence.DiscriminatorType;
 
-@Entity(name="user")
+@Entity
+@Table(name="ain_user")
 public class User {
-	
+
 	@Id
-	private Long id;
+	@Column(length=50, unique=true, nullable=false)
+	private String username;
+	@Column(length=50, nullable=false)
+	private String password;
 
 	@Column(length=50)
 	private String firstName;
@@ -27,22 +41,20 @@ public class User {
 	private boolean credentialsNonExpired = true;
 	@Column(nullable=false)
 	private boolean accountNonLocked = true;
-	
-	@Column(length=35, unique=true, nullable=false)
-	private String username;
-	@Column(length=50, nullable=false)
-	private String password;
-	
-	@OneToOne(mappedBy="user", cascade={CascadeType.ALL})
-	private Role role;
 
-	public Long getId() {
-		return id;
-	}
+    @ManyToMany(cascade=CascadeType.ALL)
+    @JoinTable(name = "user_role",
+    	joinColumns = {
+    		@JoinColumn(name="roleId")
+    	},
+    	inverseJoinColumns = {
+    		@JoinColumn(name="userId")
+    	}
+    )
+	private List<Role> roles;
 
-	public void setId(Long id) {
-		this.id = id;
-	}
+    @OneToOne(mappedBy="user", cascade={CascadeType.ALL})
+	private Profile profile;
 
 	public String getFirstName() {
 		return firstName;
@@ -76,12 +88,20 @@ public class User {
 		this.password = password;
 	}
 
-	public Role getRole() {
-		return role;
+	public List<Role> getRoles() {
+		return roles;
 	}
 
-	public void setRole(Role role) {
-		this.role = role;
+	public void setRoles(List<Role> roles) {
+		this.roles = roles;
+	}
+
+	public Profile getProfile() {
+		return profile;
+	}
+
+	public void setProfile(Profile profile) {
+		this.profile = profile;
 	}
 
 	public boolean getEnabled() {
@@ -115,4 +135,13 @@ public class User {
 	public void setAccountNonLocked(boolean accountNonLocked) {
 		this.accountNonLocked = accountNonLocked;
 	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
 }

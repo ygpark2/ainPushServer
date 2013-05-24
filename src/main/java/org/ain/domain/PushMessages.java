@@ -12,13 +12,13 @@ import javax.persistence.ManyToOne;
 
 import org.ain.domain.entity.AbstractAuditableEntity;
 
-@Entity(name="ain_android")
+@Entity(name="ain_push_messages")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name="TYPE", discriminatorType=DiscriminatorType.INTEGER)
-public class Android extends AbstractAuditableEntity {
+public class PushMessages extends AbstractAuditableEntity {
 
 	private String apiKey;
-	private String deviceId;
+	private String message;
 	private String projectId;
 
 	public String getApiKey() {
@@ -28,11 +28,11 @@ public class Android extends AbstractAuditableEntity {
 		this.apiKey = apiKey;
 	}
 
-	public String getDeviceId() {
-		return deviceId;
+	public String getMessage() {
+		return message;
 	}
-	public void setDeviceId(String deviceId) {
-		this.deviceId = deviceId;
+	public void setMessage(String message) {
+		this.message = message;
 	}
 
 	public String getProjectId() {
